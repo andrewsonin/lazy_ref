@@ -6,9 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 
-## [0.1.0] - 2024-05-09
+## [0.2.0] - 2024-05-09
 ### Added
 - `LazyRef` synchronization primitive
 
 <!-- next-url -->
-[0.1.0]: https://github.com/andrewsonin/lazy_ref/releases/tag/v0.1.0
+[0.2.0]: https://github.com/andrewsonin/lazy_ref/releases/tag/v0.2.0

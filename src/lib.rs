@@ -34,7 +34,7 @@ use crossbeam_utils::atomic::AtomicConsume;
 /// assert!(thread_ids.contains(x));
 /// ```
 ///
-/// `LazyRef` is contravariant over the underlying reference, so the following
+/// `LazyRef` is invariant over the underlying reference, so the following
 /// examples wouldn't compile.
 ///
 /// ```compile_fail
@@ -136,14 +136,30 @@ use crossbeam_utils::atomic::AtomicConsume;
 /// let x = lazy_ref.get().unwrap();
 /// assert_eq!(x, &1);
 /// ```
+///
+/// ```compile_fail
+/// use lazy_ref::LazyRef;
+///
+/// fn lifetime_invariance<'a: 'b, 'b, T>(value: LazyRef<'a, T>) -> LazyRef<'b, T> {
+///     value
+/// }
+/// ```
+///
+/// ```compile_fail
+/// use lazy_ref::LazyRef;
+///
+/// fn lifetime_contravariance<'a: 'b, 'b, T>(value: LazyRef<'b, T>) -> LazyRef<'a, T> {
+///     value
+/// }
+/// ```
 #[repr(transparent)]
-pub struct LazyRef<'a, T: 'a> {
+pub struct LazyRef<'a, T> {
     ptr: AtomicPtr<T>,
     _phantom: PhantomData<VarianceMarker<'a, T>>,
 }
 
-/// Asserts contravariance over `'a`, covariance over `T`.
-type VarianceMarker<'a, T> = fn(&'a ()) -> T;
+/// Asserts invariance over `'a`, covariance over `T`.
+type VarianceMarker<'a, T> = fn(&'a ()) -> &'a T;
 
 impl<T> Clone for LazyRef<'_, T> {
     #[inline]
