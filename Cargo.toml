@@ -1,0 +1,29 @@
+[package]
+name = "lazy_ref"
+version = "0.1.0"
+authors = ["Andrew Sonin <sonin.cel@yandex.ru>"]
+categories = ["concurrency", "rust-patterns"]
+description = """Implements a non-blocking synchronization primitive for lazy-initialized immutable references."""
+keywords = ["atomic", "lazy", "reference"]
+license = "MIT"
+documentation = "https://docs.rs/lazy_ref/"
+homepage = "https://github.com/andrewsonin/lazy_ref"
+repository = "https://github.com/andrewsonin/lazy_ref"
+readme = "README.md"
+edition = "2021"
+
+[dependencies]
+crossbeam-utils = "0.8"
+
+[lints.rust]
+rust_2018_idioms = { level = "warn", priority = 1 }
+unreachable_pub = "warn"
+missing_docs = "warn"
+missing_debug_implementations = "warn"
+
+[lints.clippy]
+undocumented_unsafe_blocks = "warn"
+pedantic = { level = "warn", priority = 1 }
+
+[dev-dependencies]
+rayon = "1"
