@@ -112,6 +112,30 @@ use crossbeam_utils::atomic::AtomicConsume;
 /// let x = lazy_ref.get_or_init(|| &ZERO);
 /// assert_eq!(x, &1);
 /// ```
+///
+/// ```compile_fail
+/// use lazy_ref::LazyRef;
+///
+/// static THREAD_IDS: &[usize] = &[1, 2, 3];
+///
+/// let lazy_ref = LazyRef::new();
+///
+/// THREAD_IDS.iter()
+///     .for_each(
+///         |id| {
+///            let r = lazy_ref.get_or_init(|| id);
+///            assert!(THREAD_IDS.contains(r));
+///        }
+///     );
+///
+/// {
+///     let zero = 0;
+///     let _ = lazy_ref.get_or_init(|| &zero);
+/// };
+///
+/// let x = lazy_ref.get().unwrap();
+/// assert_eq!(x, &1);
+/// ```
 #[repr(transparent)]
 pub struct LazyRef<'a, T: 'a> {
     ptr: AtomicPtr<T>,
