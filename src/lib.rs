@@ -291,4 +291,13 @@ impl<'a, T> LazyRef<'a, T> {
     pub fn is_initialized(&self) -> bool {
         !self.ptr.load_consume().is_null()
     }
+
+    /// Checks whether the cell is initialized. It doesn't introduce any
+    /// overhead compared to the [`is_initialized`](Self::is_initialized)
+    /// method, but is only available through unique access.
+    #[inline]
+    #[must_use]
+    pub fn is_initialized_owned(&mut self) -> bool {
+        !self.ptr.get_mut().is_null()
+    }
 }

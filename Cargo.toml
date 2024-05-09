@@ -1,6 +1,6 @@
 [package]
 name = "lazy_ref"
-version = "0.3.0"
+version = "0.4.0"
 authors = ["Andrew Sonin <sonin.cel@yandex.ru>"]
 categories = ["concurrency", "rust-patterns"]
 description = """Implements a non-blocking synchronization primitive for lazy-initialized immutable references."""
