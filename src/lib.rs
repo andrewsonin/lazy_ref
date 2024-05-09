@@ -230,44 +230,6 @@ impl<'a, T> LazyRef<'a, T> {
         unsafe { ptr.as_ref() }
     }
 
-    /// Gets the underlying reference. It doesn't introduce any overhead
-    /// compared to the [`get`](Self::get) method, but is only available
-    /// through unique access.
-    ///
-    /// Returns `None` if the cell is empty.
-    #[inline]
-    #[must_use]
-    pub fn get_owned(&mut self) -> Option<&'a T> {
-        let ptr = *self.ptr.get_mut();
-        // SAFETY:
-        // This is safe because this pointer can only be created from a valid reference,
-        // or it is null.
-        unsafe { ptr.as_ref() }
-    }
-
-    /// Sets the contents of this cell to `r`.
-    #[inline]
-    pub fn set(&self, r: &'a T) {
-        self.ptr
-            .store(std::ptr::from_ref(r).cast_mut(), Ordering::Release);
-    }
-
-    /// Sets the contents of this cell to `r`. It doesn't introduce any overhead
-    /// compared to the [`set`](Self::set) method, but is only available
-    /// through unique access.
-    #[inline]
-    pub fn set_owned(&mut self, r: &'a T) {
-        *self.ptr.get_mut() = std::ptr::from_ref(r).cast_mut();
-    }
-
-    /// Consumes the `LazyRef`, returning the wrapped reference.
-    /// Returns `None` if the cell was empty.
-    #[inline]
-    #[must_use]
-    pub fn into_inner(mut self) -> Option<&'a T> {
-        self.get_owned()
-    }
-
     /// Gets the underlying reference of the cell, initializing it with `f` if
     /// the cell was empty.
     ///
@@ -285,6 +247,29 @@ impl<'a, T> LazyRef<'a, T> {
         })
     }
 
+    /// Gets the underlying reference. It doesn't introduce any overhead
+    /// compared to the [`get`](Self::get) method, but is only available
+    /// through unique access.
+    ///
+    /// Returns `None` if the cell is empty.
+    #[inline]
+    #[must_use]
+    pub fn get_owned(&mut self) -> Option<&'a T> {
+        let ptr = *self.ptr.get_mut();
+        // SAFETY:
+        // This is safe because this pointer can only be created from a valid reference,
+        // or it is null.
+        unsafe { ptr.as_ref() }
+    }
+
+    /// Consumes the `LazyRef`, returning the wrapped reference.
+    /// Returns `None` if the cell was empty.
+    #[inline]
+    #[must_use]
+    pub fn into_inner(mut self) -> Option<&'a T> {
+        self.get_owned()
+    }
+
     /// Checks whether the cell is initialized.
     #[inline]
     #[must_use]
@@ -299,5 +284,20 @@ impl<'a, T> LazyRef<'a, T> {
     #[must_use]
     pub fn is_initialized_owned(&mut self) -> bool {
         !self.ptr.get_mut().is_null()
+    }
+
+    /// Sets the contents of this cell to `r`.
+    #[inline]
+    pub fn set(&self, r: &'a T) {
+        self.ptr
+            .store(std::ptr::from_ref(r).cast_mut(), Ordering::Release);
+    }
+
+    /// Sets the contents of this cell to `r`. It doesn't introduce any overhead
+    /// compared to the [`set`](Self::set) method, but is only available
+    /// through unique access.
+    #[inline]
+    pub fn set_owned(&mut self, r: &'a T) {
+        *self.ptr.get_mut() = std::ptr::from_ref(r).cast_mut();
     }
 }
