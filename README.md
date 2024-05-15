@@ -12,7 +12,7 @@ _Implements a non-blocking synchronization primitive for lazy-initialized immuta
 [docs-badge]: https://img.shields.io/docsrs/lazy_ref
 [docs-url]: https://docs.rs/lazy_ref
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[mit-url]: https://github.com/andrewsonin/lazy_ref/blob/master/LICENSE
+[mit-url]: https://github.com/andrewsonin/lazy_ref/blob/main/LICENSE
 [actions-badge]: https://github.com/andrewsonin/lazy_ref/actions/workflows/ci.yml/badge.svg
 [actions-url]: https://github.com/andrewsonin/lazy_ref/actions/workflows/ci.yml
 
